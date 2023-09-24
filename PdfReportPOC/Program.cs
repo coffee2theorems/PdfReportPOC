@@ -1,7 +1,16 @@
+using PdfReportPOC.Repository;
+using PdfReportPOC.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<DbContext>();
+builder.Services.AddTransient<IGraphRepository, GraphRepository>();
+builder.Services.AddWkHtmlSmartConvert()
+    .AddEmbedded()
+    .AddPdf();
+builder.Services.AddTransient<IPdfService, PdfService>();
 
 var app = builder.Build();
 

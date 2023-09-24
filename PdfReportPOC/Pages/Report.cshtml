@@ -1,19 +1,148 @@
 ﻿@page
 @model PdfReportPOC.Pages.Report
-
-@{
-    Layout = null;
+@section Scripts {
+    <script src="/js/report.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 }
+<div class="canvas_div_pdf">
+    <div class="container">
+        <div class="row">
+            <div class="app-container container-xxl d-flex flex-stack" style="background-color: #00263A; border-radius: 95rem">
+                <h1 class="page-heading text-white d-flex fw-bold fs-3 flex-column justify-content-center my-0 p-2 m-2">Report</h1>
+                <button type="submit" class="btn d-flex fw-normal fs-2 my-0 p-2 m-2 text-white" onclick="getPDF();">Download</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card col-sm m-2">
+                <div class="card-body justify-content-start align-items-start flex-column d-flex">
+                    <div class="m-0">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/keen/releases/2021-04-21-040700/theme/demo1/dist/../src/media/svg/icons/General/User.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24"/>
+                                    <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                                    <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                    </div>
+                    <div class="d-flex flex-column my-7">
+                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">@Model.SummaryData.DataDictionary["Total Users"].data.ToString()</span>
+                    </div>
+                    <div class="m-0">
+                        <span class="fw-semibold fs-6 text-gray-400">@Model.SummaryData.DataDictionary["Total Users"].category</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-sm m-2">
+                <div class="card-body justify-content-start align-items-start flex-column d-flex">
+                    <div class="m-0">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/keen/releases/2021-04-21-040700/theme/demo1/dist/../src/media/svg/icons/Communication/Mail-opened.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <path d="M6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,12 C19,12.5522847 18.5522847,13 18,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,3 C5,2.44771525 5.44771525,2 6,2 Z M7.5,5 C7.22385763,5 7,5.22385763 7,5.5 C7,5.77614237 7.22385763,6 7.5,6 L13.5,6 C13.7761424,6 14,5.77614237 14,5.5 C14,5.22385763 13.7761424,5 13.5,5 L7.5,5 Z M7.5,7 C7.22385763,7 7,7.22385763 7,7.5 C7,7.77614237 7.22385763,8 7.5,8 L10.5,8 C10.7761424,8 11,7.77614237 11,7.5 C11,7.22385763 10.7761424,7 10.5,7 L7.5,7 Z" fill="#000000" opacity="0.3"/>
+                                    <path d="M3.79274528,6.57253826 L12,12.5 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 Z" fill="#000000"/>
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                    </div>
+                    <div class="d-flex flex-column my-7">
+                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">@Model.SummaryData.DataDictionary["Total Support Emails"].data.ToString()</span>
+                    </div>
+                    <div class="m-0">
+                        <span class="fw-semibold fs-6 text-gray-400">@Model.SummaryData.DataDictionary["Total Support Emails"].category</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-sm m-2">
+                <div class="card-body justify-content-start align-items-start flex-column d-flex">
+                    <div class="m-0">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/keen/releases/2021-04-21-040700/theme/demo1/dist/../src/media/svg/icons/Communication/Incoming-call.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <path d="M9.8604543,6.01162174 C9.94073619,5.93133984 10.0459506,5.88077119 10.1587919,5.86823326 C10.4332453,5.83773844 10.6804547,6.03550595 10.7109496,6.30995936 L11.2341533,11.0187935 C11.2382309,11.0554911 11.2382309,11.0925274 11.2341533,11.129225 C11.2036585,11.4036784 10.9564491,11.6014459 10.6819957,11.5709511 L5.97316161,11.0477473 C5.86032028,11.0352094 5.75510588,10.9846407 5.67482399,10.9043588 C5.47956184,10.7090967 5.47956184,10.3925142 5.67482399,10.197252 L7.06053236,8.81154367 L5.55907018,7.31008149 C5.36380803,7.11481935 5.36380803,6.79823686 5.55907018,6.60297471 L6.26617696,5.89586793 C6.46143911,5.70060578 6.7780216,5.70060578 6.97328374,5.89586793 L8.47474592,7.39733011 L9.8604543,6.01162174 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                                    <path d="M12.0799676,14.7839934 L14.2839934,12.5799676 C14.8927139,11.9712471 15.0436229,11.0413042 14.6586342,10.2713269 L14.5337539,10.0215663 C14.1487653,9.25158901 14.2996742,8.3216461 14.9083948,7.71292558 L17.6411989,4.98012149 C17.836461,4.78485934 18.1530435,4.78485934 18.3483056,4.98012149 C18.3863063,5.01812215 18.4179321,5.06200062 18.4419658,5.11006808 L19.5459415,7.31801948 C20.3904962,9.0071287 20.0594452,11.0471565 18.7240871,12.3825146 L12.7252616,18.3813401 C11.2717221,19.8348796 9.12170075,20.3424308 7.17157288,19.6923882 L4.75709327,18.8875616 C4.49512161,18.8002377 4.35354162,18.5170777 4.4408655,18.2551061 C4.46541191,18.1814669 4.50676633,18.114554 4.56165376,18.0596666 L7.21292558,15.4083948 C7.8216461,14.7996742 8.75158901,14.6487653 9.52156634,15.0337539 L9.77132688,15.1586342 C10.5413042,15.5436229 11.4712471,15.3927139 12.0799676,14.7839934 Z" fill="#000000"/>
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                    </div>
+                    <div class="d-flex flex-column my-7">
+                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">@Model.SummaryData.DataDictionary["Total Support Calls"].data.ToString()</span>
+                    </div>
+                    <div class="m-0">
+                        <span class="fw-semibold fs-6 text-gray-400">@Model.SummaryData.DataDictionary["Total Support Calls"].category</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-sm m-2">
+                <div class="card-body justify-content-start align-items-start flex-column d-flex">
+                    <div class="m-0">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/keen/releases/2021-04-21-040700/theme/demo1/dist/../src/media/svg/icons/Clothes/T-Shirt.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <path d="M7.83498136,4 C8.22876115,5.21244017 9.94385174,6.125 11.999966,6.125 C14.0560802,6.125 15.7711708,5.21244017 16.1649506,4 L17.2723671,4 C17.3446978,3.99203791 17.4181234,3.99191839 17.4913059,4 L17.5,4 C17.8012164,4 18.0713275,4.1331782 18.2546625,4.34386406 L22.5900048,6.8468751 C23.0682974,7.12301748 23.2321726,7.73460788 22.9560302,8.21290051 L21.2997802,11.0816097 C21.0236378,11.5599023 20.4120474,11.7237774 19.9337548,11.4476351 L18.5,10.6198563 L18.5,20 C18.5,20.5522847 18.0522847,21 17.5,21 L6.5,21 C5.94771525,21 5.5,20.5522847 5.5,20 L5.5,10.6204852 L4.0673344,11.4476351 C3.58904177,11.7237774 2.97745137,11.5599023 2.70130899,11.0816097 L1.04505899,8.21290051 C0.768916618,7.73460788 0.932791773,7.12301748 1.4110844,6.8468751 L5.74424153,4.34512566 C5.92759515,4.13371 6.19818276,4 6.5,4 L6.50978325,4 C6.58296578,3.99191839 6.65639143,3.99203791 6.72872211,4 L7.83498136,4 Z" fill="#000000"/>
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                    </div>
+                    <div class="d-flex flex-column my-7">
+                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">@Model.SummaryData.DataDictionary["Total Unique Products"].data.ToString()</span>
+                    </div>
+                    <div class="m-0">
+                        <span class="fw-semibold fs-6 text-gray-400">@Model.SummaryData.DataDictionary["Total Unique Products"].category</span>
+                    </div>
+                </div>
+            </div>
 
-<!DOCTYPE html>
+        </div>
+        <div class="row">
+            <div class="RevenueByProductGraph col-sm">
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
+            </div>
+
+            <div class="UserRolePieChar col-sm">
+
+            </div>
+        </div>
+         <div class="row">
+            <div class="app-container container-xxl d-flex flex-stack" style="background-color: #00263A; border-radius: 95rem">
+                <h1 class="page-heading text-white d-flex fw-bold fs-3 flex-column justify-content-center my-0 p-2 m-2">Report</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="RevenueByProductGraph col-sm">
+
+            </div>
+
+            <div class="UserRolePieChar col-sm">
+
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="RevenueByProductGraph col-sm">
+
+            </div>
+
+            <div class="UserRolePieChar col-sm">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="app-container container-xxl d-flex flex-stack" style="background-color: #00263A; border-radius: 95rem">
+                <h1 class="page-heading text-white d-flex fw-bold fs-3 flex-column justify-content-center my-0 p-2 m-2">Report</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="RevenueByProductGraph col-sm">
+
+            </div>
+
+            <div class="UserRolePieChar col-sm">
+
+            </div>
+        </div>
+
+    </div>
 </div>
-</body>
-</html>
