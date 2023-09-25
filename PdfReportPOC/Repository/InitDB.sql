@@ -1,3 +1,11 @@
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'PdfReportPOC')
+	BEGIN
+    CREATE DATABASE PdfReportPOC;
+    END
+    GO
+    USE PdfReportPOC;
+    GO;
+
 Create table EasyData
 (
     EasyDataId INT IDENTITY(1,1) NOT NULL,
